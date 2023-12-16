@@ -1,0 +1,82 @@
+<div class="mt-3">
+    <c-container>
+        <c-row>
+            <c-col xs="8">
+                <input cFormControl id="inputPassword2" placeholder="Tìm kiếm sách" type="text" [(ngModel)]="filter.name"  (ngModelChange)="onSearchBook($event)"/>
+            </c-col>
+            <c-col>
+                <a href="/#/kho/them-sach"><button cButton color="primary">Thêm sách</button></a>
+            </c-col>
+        </c-row>
+    </c-container>
+    <div class="table mt-3">
+        <table cTable >
+            <thead  cTableColor="dark" >
+            <tr>
+              <th scope="col">Tên Sách</th>
+              <th scope="col">Tác Giả</th>
+              <th scope="col">Số Lượng</th>
+              <th scope="col">Giá Tiền</th>
+              <th></th>
+              <th></th>
+            </tr>
+            </thead>
+            <tbody *ngFor="let item of listBooks">
+            <tr>
+              <td class="h6" style="cursor: pointer ;" (click)="onNavigateInfoBook(item)">{{item.name}}</td>
+              <td>{{item.author}}</td>
+              <td>{{item.quantity}}</td>
+              <td>{{item.price | currency: "VND" }}</td>
+              <td (click)="onHandleDeleteBook(item._id)"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></td>
+              <td (click)="onHandleImport(item._id)"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="16" viewBox="0 0 512 512"><path d="M128 64c0-35.3 28.7-64 64-64H352V128c0 17.7 14.3 32 32 32H512V448c0 35.3-28.7 64-64 64H192c-35.3 0-64-28.7-64-64V336H302.1l-39 39c-9.4 9.4-9.4 24.6 0 33.9s24.6 9.4 33.9 0l80-80c9.4-9.4 9.4-24.6 0-33.9l-80-80c-9.4-9.4-24.6-9.4-33.9 0s-9.4 24.6 0 33.9l39 39H128V64zm0 224v48H24c-13.3 0-24-10.7-24-24s10.7-24 24-24H128zM512 128H384V0L512 128z"/></svg></td>
+            </tr>
+            </tbody>
+          </table>
+    </div>
+    <div>
+        <p>Tổng: {{sum}}</p>
+    </div>
+
+      <!-- MODEL CONFIRM DELETE STAFF -->
+  <div>
+    <c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+      <c-modal-header>
+        <h5 cModalTitle>Xoá sách</h5>
+        <button (click)="toggleLiveDemo()" cButtonClose></button>
+      </c-modal-header>
+      <c-modal-body>Bạn chắc chắc muốn xoá , quá trình không thể được khôi phục</c-modal-body>
+     
+      <c-modal-footer>
+        <button (click)="toggleLiveDemo()" cButton color="secondary">
+          Không
+        </button>
+        <button cButton color="primary" (click)="onDeleteBook()">Có</button>
+      </c-modal-footer>
+    </c-modal>
+  </div>
+
+<!-- MODEL CONFIRM IMPORT STAFF -->
+  <div>
+    <c-modal id="liveDemoModal" [visible]="visibleImportBook" (visibleChange)="handleLiveImportChange($event)">
+      <c-modal-header>
+        <h5 cModalTitle>Nhập Thêm Sách</h5>
+        <button (click)="toggleLiveImport()" cButtonClose></button>
+      </c-modal-header>
+      <c-modal-body>Nhập số lượng bạn nhập thêm</c-modal-body>
+      <div class="col-md-8" style="margin-left: 10px; margin-bottom: 10px;">
+        <input cFormControl id="exampleFormControlInput1" placeholder="Nhập số lượng" type="text"  [(ngModel)]="quantityImport" />
+      </div>
+      <c-modal-footer>
+        <button (click)="toggleLiveImport()" cButton color="secondary">
+          Không
+        </button>
+        <button cButton color="primary" (click)="onImportBook()">Nhập thêm</button>
+      </c-modal-footer>
+    </c-modal>
+  </div>
+  <notifier-container></notifier-container>
+</div>
+
+  
+  
+  

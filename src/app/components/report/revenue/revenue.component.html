@@ -1,0 +1,71 @@
+<div class="mt-3">
+    <c-container>
+        <c-row>
+            <c-col>
+               <button cButton color="primary" (click)="onHandleFilter()">Chọn ngày</button>
+            </c-col>
+        </c-row>
+    </c-container>
+    <div class="table mt-3">
+        <table cTable >
+            <thead  cTableColor="dark" >
+            <tr>
+              <th scope="col">Ngày bắt đầu</th>
+              <th scope="col">Ngày kết thúc</th>
+              <th scope="col">Lượng sách bán</th>
+              <th scope="col">Tổng doanh thu</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr >
+              <td>{{fromDate}}</td>
+              <td>{{toDate}}</td>
+              <td>{{listRevenue.totalQuantityBook}}</td>
+              <td>{{listRevenue.revenue | currency: "VND"}}</td>
+            </tr>
+            </tbody>
+          </table>
+    </div>
+
+        <!-- MODEL FILTER DATE -->
+        <div>
+          <div>
+            <c-modal id="liveCreateFilterDate" [visible]="createFilterDate" (visibleChange)="handleCreateFilterDate($event)">
+              <c-modal-header>
+                <h5 cModalTitle>VUI LÒNG NHẬP NGÀY</h5>
+                <button (click)="toggleLiveCreateFilterDate()" cButtonClose></button>
+              </c-modal-header>
+              <c-modal-body>
+                <c-container>
+                  <form [formGroup]="FilterDateForm">
+                  <c-row>
+                    <c-col>
+                      <c-modal-body>Ngày bắt đầu</c-modal-body>
+                      <input aria-label="lg input example" cFormControl placeholder="Ngày-Tháng-Năm" formControlName="fromDate" type="text">
+                    </c-col>
+                    <c-col>
+                      <c-modal-body>Ngày kết thúc</c-modal-body>
+                      <input aria-label="lg input example" cFormControl placeholder="Ngày-Tháng-Năm"  formControlName="toDate"  type="text">
+                    </c-col>
+                  </c-row>
+                  <!-- <c-row class="mt-3">
+                    <c-col>
+                      <input aria-label="lg input example" cFormControl placeholder="Nhập địa chỉ"  formControlName="address"  type="text">
+                    </c-col>
+                    <c-col>
+                      <input aria-label="default input example" cFormControl placeholder="Nhập ngày sinh"  formControlName="birthday" type="text">
+                    </c-col>
+                  </c-row> -->
+                </form>
+                </c-container>
+              </c-modal-body>
+              <c-modal-footer>
+                <button (click)="toggleLiveCreateFilterDate()" cButton color="secondary">
+                  Thoát
+                </button>
+                <button cButton color="primary" (click)="onFilter()">Lọc</button>
+              </c-modal-footer>
+            </c-modal>
+          </div>
+        </div>
+

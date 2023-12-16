@@ -1,0 +1,33 @@
+<form cForm [formGroup]="roleForm">
+    <c-container>
+        <c-row>
+            <c-col xs="6">
+                <label cLabel for="role">Tên vai trò</label>
+                <input cFormControl
+                       id="role"
+                       placeholder="Nhập tên vai trò"
+                       type="text"
+                       formControlName = "name"
+                />
+            </c-col>
+        </c-row>
+        <c-row >
+            <c-col xs="4" class="mt-3" *ngFor="let val of dataAccess">
+                <c-form-check>
+                    <input [checked]="val.checked" cFormCheckInput id="checkOne" type="checkbox" (change)='handleCheckboxChange(val)' />
+                    <label cFormCheckLabel for="checkOne">{{val.name}}</label>
+                </c-form-check>
+            </c-col>
+        </c-row>
+    </c-container>
+  </form>
+
+  <c-container class="mt-5">
+    <c-row>
+        <c-col xs="6">
+            <button cButton color="primary" (click)="inserRole()">Thêm vai trò</button>
+            <button cButton color="secondary"  style="margin-left: 10px;" (click)="back()">Quay lại</button>
+        </c-col>
+    </c-row>
+  </c-container>
+  <notifier-container></notifier-container>

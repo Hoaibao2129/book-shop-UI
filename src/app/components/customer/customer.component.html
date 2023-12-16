@@ -1,0 +1,119 @@
+<div class="mt-3">
+
+    <div>
+      <c-container>
+        <c-row>
+          <c-col xs="8">
+            <input cFormControl id="inputPassword2" placeholder="Tìm kiếm khách hàng" type="text"/>
+          </c-col>
+          <c-col>
+            <a ><button cButton color="primary" (click)="toggleLiveCreateCustomer()">Thêm khách hàng</button></a>
+          </c-col>
+        </c-row>
+      </c-container>
+    </div>
+  
+  
+    <div class="mt-3">
+      <table cTable>
+        <thead cTableColor="dark">
+          <tr>
+            <th scope="col">Tên khách hàng</th>
+            <th scope="col">Số điện thoại</th>
+            <th scope="col">Ngày sinh</th>
+            <th scope="col">Địa chỉ</th>
+            <th scope="col">Tổng hoá đơn đã mua</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let customer of listCustomers">
+            <td>{{customer.name}}</td>
+            <td>{{customer.tel}}</td>
+            <td>{{customer.birthday}}</td>
+            <td>{{customer.addreess}}</td>
+            <td>{{customer.totalPayment | currency: "VND"}}</td>
+            <td (click)="onHandleDelete(customer._id)"><svg xmlns="http://www.w3.org/2000/svg" height="16" width="14" viewBox="0 0 448 512"><path d="M135.2 17.7L128 32H32C14.3 32 0 46.3 0 64S14.3 96 32 96H416c17.7 0 32-14.3 32-32s-14.3-32-32-32H320l-7.2-14.3C307.4 6.8 296.3 0 284.2 0H163.8c-12.1 0-23.2 6.8-28.6 17.7zM416 128H32L53.2 467c1.6 25.3 22.6 45 47.9 45H346.9c25.3 0 46.3-19.7 47.9-45L416 128z"/></svg></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  
+    <!-- MODEL DELETE CUSTOMER -->
+    <div>
+      <c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+        <c-modal-header>
+          <h5 cModalTitle>Xoá khách hàng</h5>
+          <button (click)="toggleLiveDemo()" cButtonClose></button>
+        </c-modal-header>
+        <c-modal-body>Bạn chắc chắc muốn xoá khách hàng này , quá trình không thể được khôi phục</c-modal-body>
+        <c-modal-footer>
+          <button (click)="toggleLiveDemo()" cButton color="secondary">
+            Không
+          </button>
+          <button cButton color="primary" (click)="onDeleteCustomer()">Có</button>
+        </c-modal-footer>
+      </c-modal>
+    </div>
+    <notifier-container></notifier-container>
+  </div>
+
+    <!-- MODEL CREATE CUSTOMER -->
+    <div>
+      <div>
+        <c-modal id="liveCreateCustomer" [visible]="createCustomer" (visibleChange)="handleCreateCustomer($event)">
+          <c-modal-header>
+            <h5 cModalTitle>TẠO TÀI KHOẢN MỚI</h5>
+            <button (click)="toggleLiveCreateCustomer()" cButtonClose></button>
+          </c-modal-header>
+          <c-modal-body>
+            <c-container>
+              <form [formGroup]="customerForm">
+              <c-row>
+                <c-col>
+                  <input aria-label="lg input example" cFormControl placeholder="Nhập tên" formControlName="name" type="text" pattern="[a-zA-Zàáạảãăắằẳẵặâấầẩẫậèéẹẻẽêếềểễệđìíịỉĩòóọỏõôốồổỗộơớờởỡợùúụủũưứừửữựỳýỵỷỹ\s]*">
+                  <div *ngIf="customerForm.get('name')?.hasError('required') && customerForm.get('name')?.touched" style="color: red;">
+                    Vui lòng nhập tên.
+                  </div>
+                  <div *ngIf="customerForm.get('name')?.hasError('pattern') && customerForm.get('name')?.touched" style="color: red;" >
+                    Vui lòng nhập tên hợp lệ.
+                  </div>
+                </c-col>
+                <c-col>
+                  <input aria-label="lg input example" cFormControl placeholder="Nhập SĐT"  formControlName="tel"  type="text"  pattern="[0-9]*">
+                  <div *ngIf="customerForm.get('tel')?.hasError('required') && customerForm.get('tel')?.touched" style="color: red;">
+                    Vui lòng nhập số điện thoại.
+                  </div>
+                  <div *ngIf="customerForm.get('tel')?.hasError('pattern') && customerForm.get('tel')?.touched" style="color: red;">
+                    Vui lòng nhập số điện thoại hợp lệ.
+                  </div>
+                </c-col>
+              </c-row>
+              <c-row class="mt-3">
+                <c-col>
+                  <input aria-label="lg input example" cFormControl placeholder="Nhập địa chỉ"  formControlName="address"  type="text">
+                  <div *ngIf="customerForm.get('address')?.hasError('required') && customerForm.get('address')?.touched" style="color: red;">
+                    Vui lòng nhập địa chỉ.
+                  </div>
+                </c-col>
+                <c-col>
+                  <input aria-label="default input example" cFormControl placeholder="Nhập ngày sinh"  formControlName="birthday" type="text">
+                  <div *ngIf="customerForm.get('birthday')?.hasError('required') && customerForm.get('birthday')?.touched" style="color: red;">
+                    Vui lòng nhập ngày sinh.
+                  </div>
+                </c-col>
+              </c-row>
+            </form>
+            </c-container>
+          </c-modal-body>
+          <c-modal-footer>
+            <button (click)="toggleLiveCreateCustomer()" cButton color="secondary">
+              Thoát
+            </button>
+            <button cButton color="primary" (click)="onCreateCustomer()"  [disabled]="customerForm.invalid">Tạo mới</button>
+          </c-modal-footer>
+        </c-modal>
+      </div>
+    </div>
+  
+  

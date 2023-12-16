@@ -1,0 +1,33 @@
+<div class="mt-3">
+
+  <div>
+    <c-container>
+      <c-row>
+          <c-col>
+            <a href="/#/cai-dat/them-vai-tro"><button cButton color="primary">Thêm vai trò</button></a>
+        </c-col>
+      </c-row>
+  </c-container>
+  </div>
+
+  <div class="mt-3">
+    <table [striped]="true" cTable>
+        <thead>
+        <tr>
+          <th scope="col">Tên Vai Trò</th>
+          <th scope="col">Nhân Viên</th>
+        </tr>
+        </thead>
+        <tbody *ngFor = "let item of roleList">
+        <tr>
+          <th scope="row">{{item.roleName}}</th>
+          <td>{{item.staffCount}}</td>
+        </tr>
+        </tbody>
+      </table>
+  </div>
+  <div>
+    <p>Tổng : {{sum}}</p>
+  </div>
+
+</div>

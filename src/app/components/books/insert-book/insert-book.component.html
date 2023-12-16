@@ -1,0 +1,43 @@
+<div>
+    <form [formGroup]="bookForm" (ngSubmit)="insertBook()" class="row g-3" style=" width: 80%; margin-left: 40px;">
+        <div class="col-md-6">
+          <label for="inputEmail4" class="form-label">Tên sách</label>
+          <input type="email" class="form-control" id="bookName" formControlName="bookName" autocomplete="off" required>
+          <div *ngIf="bookForm.get('bookName')?.hasError('required') && bookForm.get('bookName')?.touched" class="text-danger">
+            Vui lòng nhập tên sách.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="inputPassword4" class="form-label">Tên tác giả</label>
+          <input  class="form-control" id="authorName" formControlName="authorName" autocomplete="off">
+          <div *ngIf="bookForm.get('authorName')?.hasError('required') && bookForm.get('authorName')?.touched" class="text-danger">
+            Vui lòng nhập tên tác giả.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="inputAddress" class="form-label">Giá tiền</label>
+          <input type="text" class="form-control" id="price" formControlName="price" autocomplete="off"  pattern="[0-9]*">
+          <div *ngIf="bookForm.get('price')?.hasError('price') && bookForm.get('price')?.touched" class="text-danger">
+            Vui lòng nhập tên giá tiền.
+          </div>
+          <div *ngIf="bookForm.get('price')?.hasError('pattern') && bookForm.get('price')?.touched" class="text-danger">
+            Vui lòng nhập giá tiền hợp lệ.
+          </div>
+        </div>
+        <div class="col-md-6">
+          <label for="inputCity" class="form-label">Số lượng</label>
+          <input type="text" class="form-control" id="quantity" formControlName="quantity" autocomplete="off" pattern="[0-9]*">
+          <div *ngIf="bookForm.get('quantity')?.hasError('required') && bookForm.get('quantity')?.touched" class="text-danger">
+            Vui lòng nhập số lượng.
+          </div>
+          <div *ngIf="bookForm.get('quantity')?.hasError('pattern') && bookForm.get('quantity')?.touched" class="text-danger">
+            Vui lòng nhập số lượng hợp lệ.
+          </div>
+        </div>
+        <div class="col-12">
+          <button type="submit" class="btn btn-primary"  [disabled]="bookForm.invalid">Lưu</button>
+          <button type="button" class="btn btn-light ms-2" (click)="back()">Quay lại</button>
+        </div>
+      </form>
+      <notifier-container></notifier-container>
+</div>

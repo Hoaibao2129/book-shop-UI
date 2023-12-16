@@ -1,0 +1,178 @@
+<div>
+  <div class="dropdown">
+    <input class="form-control me-2 form-select" type="search" placeholder="Tìm kiếm sách" aria-label="Search"
+        data-bs-toggle="dropdown" [(ngModel)]="filter.name" (ngModelChange)="onSearch($event)">
+    <ul class="dropdown-menu" style="width: 100%;">
+        <li *ngFor="let item of data"><a class="dropdown-item" (click)="onResult(item)">{{item.name}}</a></li>
+        <li *ngIf="data.length === 0" style="text-align: center;">Không có kết quả</li>
+    </ul>
+</div>
+    
+
+    
+      <form cForm class="row mt-4" [formGroup]="infoBook">
+        <div class="col-md-6 mb-3">
+          <label cLabel for="bookName">Tên sách</label>
+          <input cFormControl id="bookName" formControlName="name" readonly/>
+        </div>
+        <div class="col-md-6 mb-3">
+            <label cLabel for="quantity">Số lượng</label>
+            <input cFormControl id="quantity"  formControlName="quantity" (ngModelChange)="onChangeQuantity(infoBook.value)"/>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label cLabel for="total">Giá tiền</label>
+            <input cFormControl id="total" formControlName="total" readonly/>
+          </div>
+          <div class="col-md-6 mb-3">
+            <label cLabel for="discount">Giảm giá</label>
+            <input cFormControl id="discount" formControlName="discount" (ngModelChange)="onChangeDiscount(infoBook.value)"/>
+          </div>
+      </form>
+
+      <div  *ngIf="listBuyBooks.length > 0">
+        <table cTable>
+          <thead cTableColor="dark">
+          <tr>
+            <th scope="col">Tên sách</th>
+            <th scope="col">Số lượng</th>
+            <th scope="col">Giá</th>
+            <th scope="col">Giảm giá</th>
+            <th scope="col">Thành tiền</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let infoBook of listBuyBooks">
+            <td>{{infoBook.name}}</td>
+            <td>{{infoBook.quantity}}</td>
+            <td>{{infoBook.price | currency: "VND"}}</td>
+            <td>{{infoBook.discount | currency: "VND"}}</td>
+            <td>{{infoBook.totalMoney | currency: "VND"}}</td>
+          </tr>
+          </tbody>
+          <tfoot>
+          <tr>
+            <td class="h5">Tổng</td>
+            <td>{{quantity}}</td>
+            <td>{{price | currency: "VND" }}</td>
+            <td>{{discount | currency: "VND"}}</td>
+            <td>{{totalMoney | currency: "VND"}}</td>
+          </tr>
+          </tfoot>
+        </table>
+      <div>
+        <c-container>
+          <c-row>
+            <c-col>
+              <div>
+                <c-container>
+                  <c-row>
+                    <c-col>
+                      <input class="form-control me-2 form-select" type="searchCustomer" placeholder="Số điện thoại khách hàng"
+                        aria-label="Search" data-bs-toggle="dropdown" [(ngModel)]="filter.custommer"
+                        (ngModelChange)="onSearchCustomer($event)">
+                      <ul class="dropdown-menu">
+                        <li *ngFor="let item of dataCustomer"><a class="dropdown-item"
+                            (click)="onResultCustomer(item)">{{item.name}}</a></li>
+                        <li *ngIf="dataCustomer.length === 0" style="text-align: center;">Không có kết quả</li>
+                      </ul>
+                    </c-col>
+                  </c-row>
+                  <c-row class="mt-3">
+                    <c-col xs="3">
+                      <button cButton color="secondary" size="sm" (click)="toggleLiveCreateCustomer()">Tạo Tài Khoản</button>
+                    </c-col>
+                    <c-col xs="3">
+                      <button cButton color="primary" size="sm" (click)="toggleLiveDemo()">Thanh Toán</button>
+                    </c-col>
+                  </c-row>
+                </c-container>
+              </div>
+            </c-col>
+            <c-col>
+              <!-- Customer Info -->
+              <div>
+                <c-container *ngIf="resultDataCustomer.length > 0">
+                  <c-row>
+                    <c-col>
+                      <input aria-label="default input example" cFormControl placeholder="Default input" type="text"
+                        [value]='resultDataCustomer[0].name' readonly>
+                    </c-col>
+                    <c-col>
+                      <input aria-label="default input example" cFormControl placeholder="Default input" type="text"
+                        [value]='resultDataCustomer[0].tel' readonly>
+                    </c-col>
+                  </c-row>
+                  <c-row style="margin-top: 10px;">
+                    <c-col *ngIf="promotion">
+                      <c-form-check>
+                      <input cFormCheckInput id="checkOne" type="checkbox" [checked]="use"  (change)='handleCheckboxChange()' />
+                      <label cFormCheckLabel cFormCheckLabel >Khuyến mãi {{promotion.discount}}% cho tổng đơn hàng</label>
+                     </c-form-check>
+                    </c-col>
+                  </c-row>
+                </c-container>
+              </div>
+            </c-col>
+          </c-row>
+        </c-container>
+      </div>
+
+
+     <!-- MODEL CONFIRM PAYMENT -->
+      <div>
+        <c-modal id="liveDemoModal" [visible]="visible" (visibleChange)="handleLiveDemoChange($event)">
+          <c-modal-header>
+            <h5 cModalTitle>Thanh Toán</h5>
+            <button (click)="toggleLiveDemo()" cButtonClose></button>
+          </c-modal-header>
+          <c-modal-body>Xác nhận thanh toán</c-modal-body>
+          <c-modal-footer>
+            <button (click)="toggleLiveDemo()" cButton color="secondary">
+              Không
+            </button>
+            <button cButton color="primary" (click)="onPayment()">Có</button>
+          </c-modal-footer>
+        </c-modal>
+      </div>
+
+      <!-- MODEL CREATE CUSTOMER -->
+      <div>
+        <div>
+          <c-modal id="liveCreateCustomer" [visible]="createCustomer" (visibleChange)="handleCreateCustomer($event)">
+            <c-modal-header>
+              <h5 cModalTitle>TẠO TÀI KHOẢN MỚI</h5>
+              <button (click)="toggleLiveCreateCustomer()" cButtonClose></button>
+            </c-modal-header>
+            <c-modal-body>
+              <c-container>
+                <form [formGroup]="customerForm">
+                <c-row>
+                  <c-col>
+                    <input aria-label="lg input example" cFormControl placeholder="Nhập tên" formControlName="name" type="text">
+                  </c-col>
+                  <c-col>
+                    <input aria-label="lg input example" cFormControl placeholder="Nhập SĐT"  formControlName="tel"  type="text">
+                  </c-col>
+                </c-row>
+                <c-row class="mt-3">
+                  <c-col>
+                    <input aria-label="lg input example" cFormControl placeholder="Nhập địa chỉ"  formControlName="address"  type="text">
+                  </c-col>
+                  <c-col>
+                    <input aria-label="default input example" cFormControl placeholder="Nhập ngày sinh"  formControlName="birthday" type="text">
+                  </c-col>
+                </c-row>
+              </form>
+              </c-container>
+            </c-modal-body>
+            <c-modal-footer>
+              <button (click)="toggleLiveCreateCustomer()" cButton color="secondary">
+                Thoát
+              </button>
+              <button cButton color="primary" (click)="onCreateCustomer()">Tạo mới</button>
+            </c-modal-footer>
+          </c-modal>
+        </div>
+      </div>
+</div>
+<notifier-container></notifier-container>

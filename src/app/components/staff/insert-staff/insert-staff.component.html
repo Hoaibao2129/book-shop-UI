@@ -1,0 +1,48 @@
+<div>
+    <form cForm class="row g-3" [formGroup]="staffForm" (ngSubmit)="insertSaff()">
+        <c-col [md]="6">
+          <label cLabel for="inputEmail4">Tên nhân viên</label>
+          <input cFormControl id="inputEmail4" type="text"  placeholder="Tên nhân viên" formControlName="name"/>
+          <div *ngIf="staffForm.get('name')?.invalid && (staffForm.get('name')?.dirty || staffForm.get('name')?.touched)" class="text-danger">
+            Vui lòng nhập tên nhân viên.
+        </div>
+        </c-col>
+        <c-col [md]="6">
+          <label cLabel for="inputPassword4">Số điện thoại</label>
+          <input cFormControl id="inputPassword4" type="text" placeholder="Số điện thoại" formControlName="tel"  pattern="[0-9]*"/>
+          <div *ngIf="staffForm.get('tel')?.hasError('tel') && staffForm.get('tel')?.touched" class="text-danger">
+            Vui lòng nhập số điện thoại.
+          </div>
+          <div *ngIf="staffForm.get('tel')?.hasError('pattern') && staffForm.get('tel')?.touched" class="text-danger">
+            Vui lòng nhập số điện thoại hợp lệ.
+          </div>
+        </c-col>
+        <c-col [xs]="6">
+          <label cLabel for="inputAddress">Ngày sinh</label>
+          <input cFormControl id="inputAddress" placeholder="Ngày sinh" formControlName="birthday"/>
+          <div *ngIf="staffForm.get('birthday')?.invalid && (staffForm.get('birthday')?.dirty || staffForm.get('birthday')?.touched)" class="text-danger">
+            Vui lòng nhập ngày sinh.
+         </div>
+        </c-col>
+        <c-col [xs]="6">
+          <label cLabel for="inputAddress2">Email</label>
+          <input cFormControl id="inputAddress2" placeholder="Email" formControlName="email"/>
+        </c-col>
+        <!-- <c-col [md]="6">
+          <label cLabel for="inputCity">Địa chỉ</label>
+          <input cFormControl id="inputCity" placeholder="Địa chỉ" />
+        </c-col> -->
+        <c-col [md]="4">
+          <label cLabel for="inputState">Quyền</label>
+          <select cSelect id="inputState" formControlName="roleName">
+            <option selected >Chọn vai trò</option>
+            <option *ngFor="let item of roleList">{{item.roleName}}</option>
+          </select>
+        </c-col>
+        <c-col [xs]="12">
+          <button cButton  class="btn btn-light ms-2" (click)="back()" color="dark">Quay lại</button>
+          <button cButton type="submit" style="margin-left: 10px;"  [disabled]="staffForm.invalid">Lưu</button>
+        </c-col>
+      </form>
+      <notifier-container></notifier-container>
+</div>
